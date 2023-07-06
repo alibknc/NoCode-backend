@@ -1,14 +1,19 @@
 package com.kou.bitirme.controller;
 
+import com.kou.bitirme.dto.request.CreateEndpointRequest;
+import com.kou.bitirme.dto.response.EndpointDto;
 import com.kou.bitirme.service.EndpointService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/endpoint")
 public class EndpointController {
 
     private final EndpointService endpointService;
@@ -17,17 +22,15 @@ public class EndpointController {
         this.endpointService = endpointService;
     }
 
-    @GetMapping("/**")
-    public ResponseEntity<Object> callEndpoint(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        String key = request.getParameter("key");
+    @PostMapping("/create")
+    public ResponseEntity<Void> createEndpoint(@Valid @RequestBody CreateEndpointRequest request) {
+        endpointService.createEndpoint(request);
+        return ResponseEntity.ok().build();
+    }
 
-        if (key.isEmpty()) {
-            throw new RuntimeException("API key must not empty");
-        } else {
-            String endpoint = uri.replace("/api/", "");
-            return ResponseEntity.ok(endpointService.runQuery(endpoint, key));
-        }
+    @GetMapping("/list")
+    public ResponseEntity<List<EndpointDto>> getAllEndpoints(@RequestParam UUID projectId) {
+        return ResponseEntity.ok(endpointService.getAllEndpoints(projectId));
     }
 
 }

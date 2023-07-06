@@ -18,6 +18,4 @@ public class EndpointDto {
 
     private String projectId;
 
-    private String userId;
-
 }

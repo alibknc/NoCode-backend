@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,7 +27,7 @@ public class ProjectService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<ProjectDto> getAllProjects(String userId) {
+    public List<ProjectDto> getAllProjects(UUID userId) {
         List<Project> projectList = projectRepository.findAllProjects(userId);
 
         return projectList.stream()
@@ -35,10 +35,17 @@ public class ProjectService {
     }
 
     public void createProject(CreateProjectRequest request) {
-        jdbcTemplate.execute("CREATE SCHEMA " + request.getTitle());
+        String schema = "t" + UUID.randomUUID().toString().split("-")[0];
+        jdbcTemplate.execute("CREATE SCHEMA " + schema);
 
         Project project = projectMapper.toProject(request);
+        project.setApiKey(UUID.randomUUID().toString());
+        project.setSchema(schema);
         projectRepository.save(project);
+    }
+
+    public String getKeyById(UUID projectId) {
+        return projectRepository.getKeyByProjectId(projectId);
     }
 
 }

@@ -24,6 +24,9 @@ public class Project {
     private String title;
 
     @Column(nullable = false)
+    private String schema;
+
+    @Column(nullable = false)
     private String apiKey;
 
 }

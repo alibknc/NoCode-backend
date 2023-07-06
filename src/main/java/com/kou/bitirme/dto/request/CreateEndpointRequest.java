@@ -19,6 +19,8 @@ public class CreateEndpointRequest {
 
     private String url;
 
+    private String table;
+
     private String projectId;
 
     private String userId;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
@@ -19,13 +19,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDto> getUser(String email, String password) {
-        return ResponseEntity.ok(userService.getUser(email, password));
+    public ResponseEntity<UserDto> login(@RequestParam String email, @RequestParam String password) {
+        return ResponseEntity.ok(userService.login(email, password));
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@Valid @RequestBody CreateUserRequest user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<Object> register(@Valid @RequestBody CreateUserRequest user) {
+        return ResponseEntity.ok(userService.register(user));
     }
 
 }

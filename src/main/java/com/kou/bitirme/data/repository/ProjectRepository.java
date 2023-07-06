@@ -10,9 +10,12 @@ import java.util.UUID;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     @Query("select p from Project p where p.userId = ?1")
-    List<Project> findAllProjects(String userId);
+    List<Project> findAllProjects(UUID userId);
 
     @Query("select p from Project p where p.apiKey = ?1")
     Project getProjectByKey(String key);
+
+    @Query("select p.apiKey from Project p where p.id = ?1")
+    String getKeyByProjectId(UUID id);
 
 }

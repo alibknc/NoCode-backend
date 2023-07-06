@@ -13,11 +13,12 @@ import java.util.UUID;
 @Builder
 public class ProjectDto implements Serializable {
 
+    private UUID id;
+
     private UUID userId;
 
     private String title;
 
     private String apiKey;
 
-    private List<TableDto> tables;
 }
